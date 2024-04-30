@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingrese PIN</title>
+</head>
+
+<body>
+    <h1>Ingrese su PIN</h1>
+    <p id="mensaje"></p>
+
+    <script>
+        const PIN_AUTORIZADO = "siri123";
+
+        // Función para validar el PIN
+        function validarPIN(pin) {
+            return pin === PIN_AUTORIZADO;
+        }
+
+        // Función para iniciar el reconocimiento de voz
+        function iniciarReconocimiento() {
+            const recognition = new webkitSpeechRecognition() || SpeechRecognition();
+            recognition.lang = 'es-ES';
+
+            recognition.onresult = function(event) {
+                const pinIngresado = event.results[0][0].transcript.trim();
+                if (validarPIN(pinIngresado)) {
+                    document.getElementById("mensaje").textContent = "PIN válido. Cargando el otro script...";
+                    setTimeout(function() {
+                        cargarOtroScript();
+                    }, 2000); // Simulando un breve retraso antes de cargar el otro script
+                } else {
+                    document.getElementById("mensaje").textContent = "PIN incorrecto. Inténtelo de nuevo.";
+                }
+            }
+
+            recognition.start();
+        }
+
+        // Llamar a iniciarReconocimiento() cuando se carga la página
+        window.onload = function() {
+            iniciarReconocimiento();
+        };
+
+        // Función para cargar el otro script
+        function cargarOtroScript() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>
