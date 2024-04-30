@@ -12,7 +12,7 @@
     <p id="mensaje"></p>
 
     <script>
-        const PIN_AUTORIZADO = "siri123";
+        const PIN_AUTORIZADO = "Siri";
 
         // Función para validar el PIN
         function validarPIN(pin) {
@@ -26,13 +26,17 @@
 
             recognition.onresult = function(event) {
                 const pinIngresado = event.results[0][0].transcript.trim();
+                document.getElementById("mensaje").textContent = "PIN ingresado: " + pinIngresado;
                 if (validarPIN(pinIngresado)) {
-                    document.getElementById("mensaje").textContent = "PIN válido. Cargando el otro script...";
+                    document.getElementById("mensaje").textContent += " - PIN válido. Cargando el otro script...";
                     setTimeout(function() {
                         cargarOtroScript();
                     }, 2000); // Simulando un breve retraso antes de cargar el otro script
                 } else {
-                    document.getElementById("mensaje").textContent = "PIN incorrecto. Inténtelo de nuevo.";
+                    document.getElementById("mensaje").textContent += " - PIN incorrecto. Inténtelo de nuevo.";
+                    setTimeout(function() {
+                        iniciarReconocimiento();
+                    }, 2000); // Reiniciar el reconocimiento de voz después de 2 segundos
                 }
             }
 
